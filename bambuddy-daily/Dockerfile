@@ -15,8 +15,7 @@ RUN apk add --no-cache \
   ca-certificates \
   py3-opencv \
   curl \
-  ffmpeg \
-  iproute2
+  ffmpeg
 
 # Install Python dependencies with cache mount
 COPY --from=builder /app/requirements.txt ./
@@ -25,6 +24,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   pip install --root-user-action=ignore -r requirements.txt
 
 COPY --from=builder /app /app
+
+# Patch network_utils to enumerate alias IPs via BusyBox-compatible text parsing
+COPY patches/network_utils.py /app/backend/app/services/network_utils.py
 
 ENV PYTHONUNBUFFERED=1
 ENV DATA_DIR=/app/data
