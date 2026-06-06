@@ -6,13 +6,14 @@ services:
     restart: unless-stopped
 
   watchtower:
-    image: containrrr/watchtower
+    image: containrrr/watchtower:1.7.1
     container_name: watchtower-bambuddy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       WATCHTOWER_POLL_INTERVAL: "3600"
       WATCHTOWER_CLEANUP: "true"
+      DOCKER_API_VERSION: "1.47"
     command: bambuddy-sentinel
     restart: unless-stopped
     depends_on:
