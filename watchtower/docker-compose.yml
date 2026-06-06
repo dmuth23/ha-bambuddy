@@ -1,0 +1,19 @@
+services:
+  bambuddy-sentinel:
+    image: ghcr.io/maziggy/bambuddy:daily
+    container_name: bambuddy-sentinel
+    command: ["sleep", "infinity"]
+    restart: unless-stopped
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower-bambuddy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      WATCHTOWER_POLL_INTERVAL: "3600"
+      WATCHTOWER_CLEANUP: "true"
+    command: bambuddy-sentinel
+    restart: unless-stopped
+    depends_on:
+      - bambuddy-sentinel

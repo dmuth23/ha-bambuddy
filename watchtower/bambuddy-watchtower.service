@@ -1,0 +1,16 @@
+[Unit]
+Description=BambuBuddy Watchtower event listener
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=dmadmin
+ExecStart=/home/dmadmin/projects/ha-bambuddy/watchtower/event_listener.sh
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
